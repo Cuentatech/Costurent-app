@@ -264,7 +264,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `correo`, `clave`, `telefono`, `rol`, `created_at`, `updated_at`) VALUES
-(1, 'Juan', 'Perez', 'juan@example.com', '$2y$12$M3Brjt0aIxcSjQGvA5EWvOxbKRU7/QYhLqYwBxcVN04tnIwg2vl7K', NULL, 'administrador', '2025-05-19 01:05:48', '2025-05-19 02:05:40'),
+(1, 'Juan', 'Perez', 'JUANADMIN@gmail.com', '$2y$12$M3Brjt0aIxcSjQGvA5EWvOxbKRU7/QYhLqYwBxcVN04tnIwg2vl7K', NULL, 'administrador', '2025-05-19 01:05:48', '2025-05-19 02:05:40'),
 (2, 'naudy', 'nos', 'noalaurxa@gmail.com', '$2y$12$JJFIlHlPWM1v988URmJzAON1i.lt/goWNYaPRb56uPrOtRQDvqSl2', '936958234', 'cliente', '2025-05-19 02:27:11', '2025-05-19 02:27:11');
 
 --
