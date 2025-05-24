@@ -12,10 +12,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
-// Grupo de rutas protegidas por autenticación
+// AUTENTIFICACIÓN POR ROL
 Route::middleware('auth')->group(function () {
 
-    // Rutas para admin con autorización can:admin
+    // RUTAS PARA ADMI
     Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/clientes', [AdminController::class, 'listarClientes'])->name('clientes');
@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/alquileres/{id}/sancionar', [AdminController::class, 'aplicarSancion'])->name('alquileres.sancionar');
     });
 
-    // Rutas para cliente con autorización can:cliente
+    // RUTAS PARA
     Route::middleware('can:cliente')->prefix('cliente')->name('cliente.')->group(function () {
         Route::get('/dashboard', [ClienteController::class, 'dashboard'])->name('dashboard');
         Route::get('/disfraces', [ClienteController::class, 'listarDisfraces'])->name('disfraces');
