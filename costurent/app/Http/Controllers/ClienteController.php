@@ -3,36 +3,59 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Usuario;
+use App\Models\Disfraz;
 
 class ClienteController extends Controller
 {
+    // Panel del cliente
     public function dashboard()
     {
-        return 'Dashboard Cliente';
+        return view('cliente.dashboard');
     }
 
-    public function listarDisfraces()
+    // Ver perfil
+    public function perfil()
     {
-        return 'Lista de Disfraces (Cliente)';
+        $cliente = Auth::user();
+        return view('cliente.perfil', compact('cliente'));
     }
 
-    public function mostrarDisfraz($id)
+    // Editar perfil (formulario)
+    public function editarPerfil()
     {
-        return "Mostrar Disfraz $id (Cliente)";
+        $cliente = Auth::cliente();
+        return view('cliente.editar', compact('cliente'));
     }
 
-    public function reservar($id)
+    public function actualizarPerfil(Request $request)
     {
-        return "Reservar Disfraz $id (Cliente)";
+        $cliente = Auth::cliente();
+
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'apellido' => 'required|string|max:100',
+            'telefono' => 'nullable|string|max:20',
+            'clave' => 'nullable|string|min:6|confirmed'
+        ]);
+
+        $cliente->nombre = $request->nombre;
+        $cliente->apellido = $request->apellido;
+        $cliente->telefono = $request->telefono;
+
+        if ($request->filled('clave')) {
+            $cliente->clave = Hash::make($request->clave);
+        }
+        $cliente->save();
+
+        return redirect()->route('cliente.perfil')->with('success', 'Perfil actualizadO');
     }
 
-    public function historialAlquileres()
+    public function verDisfraces()
     {
-        return 'Historial de Alquileres (Cliente)';
-    }
-
-    public function cancelarReserva($id)
-    {
-        return "Cancelar Reserva $id (Cliente)";
+        $disfraces = Disfraz::where('cantidad_disponible', '>', 0)->get();
+        return view('cliente.disfraces', compact('disfraces'));
     }
 }

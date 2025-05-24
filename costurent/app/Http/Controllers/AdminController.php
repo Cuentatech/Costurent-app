@@ -3,61 +3,43 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Usuario;
+use App\Models\Alquiler;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        return 'Dashboard Admin';
+        return view('admin.dashboard');
     }
 
     public function listarClientes()
     {
-        return 'Lista de Clientes (Admin)';
-    }
-
-    public function listarDisfraces()
-    {
-        return 'Lista de Disfraces (Admin)';
-    }
-
-    public function crearDisfraz()
-    {
-        return 'Crear Disfraz (Admin)';
-    }
-
-    public function guardarDisfraz(Request $request)
-    {
-        return 'Guardar Disfraz (Admin)';
-    }
-
-    public function editarDisfraz($id)
-    {
-        return "Editar Disfraz $id (Admin)";
-    }
-
-    public function actualizarDisfraz(Request $request, $id)
-    {
-        return "Actualizar Disfraz $id (Admin)";
-    }
-
-    public function eliminarDisfraz($id)
-    {
-        return "Eliminar Disfraz $id (Admin)";
+        $clientes = Usuario::where('rol', 'cliente')->get();
+        return view('admin.clientes.index', compact('clientes'));
     }
 
     public function listarAlquileres()
     {
-        return 'Lista de Alquileres (Admin)';
+        $alquileres = Alquiler::with('disfraz', 'cliente')->get();
+        return view('admin.alquileres.index', compact('alquileres'));
     }
 
     public function cambiarEstadoAlquiler($id)
     {
-        return "Cambiar estado de Alquiler $id (Admin)";
+        $alquiler = Alquiler::findOrFail($id);
+        $alquiler->estado = $alquiler->estado === 'pendiente' ? 'devuelto' : 'pendiente';
+        $alquiler->save();
+
+        return redirect()->back()->with('success', 'Estado del alquiler actualizado.');
     }
 
     public function aplicarSancion($id)
     {
-        return "Aplicar sanción a Alquiler $id (Admin)";
+        $alquiler = Alquiler::findOrFail($id);
+        $alquiler->sancionado = true;
+        $alquiler->save();
+
+        return redirect()->back()->with('success', 'Sanción aplicada correctamente.');
     }
 }

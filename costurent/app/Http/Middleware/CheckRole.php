@@ -15,8 +15,8 @@ class CheckRole
             return redirect()->route('login.form');
         }
 
-        if (Auth::userio()->role !== $role) {
-            abort(403, 'HOLA');
+        if (Auth::user()->role !== $role) {
+            abort(403, '¡No tienes acceso autorizado!');
         }
 
         return $next($request);

@@ -9,13 +9,21 @@ use Illuminate\Support\Facades\Hash;
 class UsuariosSeeder extends Seeder
 {
     public function run()
-{
-    \App\Models\Usuario::create([
-        'nombre' => 'Juan',
-        'apellido' => 'Perez',
-        'correo' => 'juan@example.com',
-        'clave' => Hash::make('123456789'),  // Usa Hash::make
-        'rol' => 'administrador',
-    ]);
-}
+    {
+        Usuario::create([
+            'nombre' => 'Admin',
+            'apellido' => 'Principal',
+            'correo' => 'admin@gmail.com',
+            'clave' => Hash::make('admin123'), 
+            'rol' => 'administrador',
+        ]);
+
+        Usuario::create([
+            'nombre' => 'Cliente',
+            'apellido' => 'Señor',
+            'correo' => 'cliente@gmail.com',
+            'clave' => Hash::make('cliente123'),
+            'rol' => 'cliente',
+        ]);
+    }
 }
