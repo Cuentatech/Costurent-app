@@ -15,22 +15,29 @@ Route::post('/register', [AuthController::class, 'register']);
 // AUTENTIFICACIÓN POR ROL
 Route::middleware('auth')->group(function () {
 
-    // RUTAS PARA ADMI
+// RUTAS PARA ADMINISTRACIÓN
     Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-        Route::get('/clientes', [AdminController::class, 'listarClientes'])->name('clientes');
-        Route::get('/disfraces', [AdminController::class, 'listarDisfraces'])->name('disfraces');
-        Route::get('/disfraces/crear', [AdminController::class, 'crearDisfraz'])->name('disfraces.crear');
-        Route::post('/disfraces', [AdminController::class, 'guardarDisfraz'])->name('disfraces.guardar');
-        Route::get('/disfraces/{id}/editar', [AdminController::class, 'editarDisfraz'])->name('disfraces.editar');
-        Route::put('/disfraces/{id}', [AdminController::class, 'actualizarDisfraz'])->name('disfraces.actualizar');
-        Route::delete('/disfraces/{id}', [AdminController::class, 'eliminarDisfraz'])->name('disfraces.eliminar');
-        Route::get('/alquileres', [AdminController::class, 'listarAlquileres'])->name('alquileres');
-        Route::post('/alquileres/{id}/cambiar-estado', [AdminController::class, 'cambiarEstadoAlquiler'])->name('alquileres.cambiarEstadoAlquiler');
-        Route::post('/alquileres/{id}/sancionar', [AdminController::class, 'aplicarSancion'])->name('alquileres.sancionar');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    // Clientes
+    Route::get('/clientes', [AdminController::class, 'listarClientes'])->name('clientes.index');
+
+    // Disfraces
+    Route::get('/disfraces', [AdminController::class, 'listarDisfraces'])->name('disfraces.index');
+    Route::get('/disfraces/crear', [AdminController::class, 'crearDisfraz'])->name('disfraces.crear');
+    Route::post('/disfraces', [AdminController::class, 'guardarDisfraz'])->name('disfraces.guardar');
+    Route::get('/disfraces/{id}/editar', [AdminController::class, 'editarDisfraz'])->name('disfraces.editar');
+    Route::put('/disfraces/{id}', [AdminController::class, 'actualizarDisfraz'])->name('disfraces.actualizar');
+    Route::delete('/disfraces/{id}', [AdminController::class, 'eliminarDisfraz'])->name('disfraces.eliminar');
+
+    // Alquileres
+    Route::get('/alquileres', [AdminController::class, 'listarAlquileres'])->name('alquileres.index');
+    Route::post('/alquileres/{id}/cambiar-estado', [AdminController::class, 'cambiarEstadoAlquiler'])->name('alquileres.cambiarEstado');
+    Route::post('/alquileres/{id}/sancionar', [AdminController::class, 'aplicarSancion'])->name('alquileres.sancionar');
     });
 
-    // RUTAS PARA
+
+    // RUTAS PARA CLIENTE
     Route::middleware('can:cliente')->prefix('cliente')->name('cliente.')->group(function () {
         Route::get('/dashboard', [ClienteController::class, 'dashboard'])->name('dashboard');
         Route::get('/disfraces', [ClienteController::class, 'listarDisfraces'])->name('disfraces');

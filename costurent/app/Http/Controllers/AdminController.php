@@ -10,7 +10,11 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $totalClientes = Usuario::where('rol', 'cliente')->count();
+        $alquileresActivos = Alquiler::where('estado', 'activa')->count();
+        $alquileresRetrasados = Alquiler::where('estado', 'retrasada')->count();
+
+        return view('admin.dashboard', compact('totalClientes', 'alquileresActivos', 'alquileresRetrasados'));
     }
 
     public function listarClientes()
