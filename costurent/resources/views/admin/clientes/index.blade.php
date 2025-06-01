@@ -20,7 +20,7 @@
                 type="text"
                 name="search"
                 class="form-control"
-                placeholder="Buscar por ID, nombre, apellido o teléfono"
+                placeholder="Buscar por ID, nombre o apellido"
                 value="{{ request('search') }}"
                 autocomplete="off"
             >
