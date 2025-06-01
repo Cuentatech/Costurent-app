@@ -1,82 +1,73 @@
 {{-- resources/views/admin/dashboard.blade.php --}}
+@extends('layouts.admin')
 
-@extends('layouts.app')
-
-@section('title', 'Panel de Administración')
+@section('title', 'Dashboard')
 
 @section('content')
 <div class="container-fluid">
-    <div class="row min-vh-100">
-        
-        {{-- Sidebar --}}
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-            <div class="position-sticky pt-3">
-                <h5 class="sidebar-heading px-3 mb-3">Menú Admin</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link @if(request()->routeIs('admin.dashboard')) active @endif" href="{{ route('admin.dashboard') }}">
-                            <i class="bi bi-speedometer2 me-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @if(request()->routeIs('admin.clientes.index')) active @endif" href="{{ route('admin.clientes.index') }}">
-                            <i class="bi bi-people-fill me-2"></i> Clientes
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @if(request()->routeIs('admin.alquileres.index')) active @endif" href="{{ route('admin.alquileres.index') }}">
-                            <i class="bi bi-bag-check-fill me-2"></i> Alquileres
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+    <h1 class="mb-4">Panel de Administración</h1>
 
-        {{-- Contenido principal --}}
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <h1 class="h2 mb-4">Panel de Administración</h1>
-
-            {{-- Estadísticas principales --}}
-            <div class="row text-white mb-5">
-                <div class="col-md-4 mb-4">
-                    <div class="card bg-primary shadow-sm h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <i class="bi bi-people-fill display-4 me-3"></i>
-                            <div>
-                                <h5 class="card-title">Total de Clientes</h5>
-                                <h3 class="card-text">{{ $totalClientes }}</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-4">
-                    <div class="card bg-success shadow-sm h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <i class="bi bi-bag-check-fill display-4 me-3"></i>
-                            <div>
-                                <h5 class="card-title">Alquileres Activos</h5>
-                                <h3 class="card-text">{{ $alquileresActivos }}</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-4">
-                    <div class="card bg-warning shadow-sm h-100">
-                        <div class="card-body d-flex align-items-center">
-                            <i class="bi bi-clock-history display-4 me-3"></i>
-                            <div>
-                                <h5 class="card-title">Alquileres Retrasados</h5>
-                                <h3 class="card-text">{{ $alquileresRetrasados }}</h3>
-                            </div>
-                        </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm text-white bg-primary">
+                <div class="card-body d-flex align-items-center">
+                    <i class="bi bi-people-fill display-4 me-3"></i>
+                    <div>
+                        <h5>Total Clientes</h5>
+                        <h3>{{ $totalClientes }}</h3>
                     </div>
                 </div>
             </div>
+        </div>
 
-            {{-- Aquí puedes agregar más contenido o widgets --}}
-        </main>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-white bg-success">
+                <div class="card-body d-flex align-items-center">
+                    <i class="bi bi-bag-check-fill display-4 me-3"></i>
+                    <div>
+                        <h5>Alquileres Activos</h5>
+                        <h3>{{ $alquileresActivos }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-white bg-warning">
+                <div class="card-body d-flex align-items-center">
+                    <i class="bi bi-clock-history display-4 me-3"></i>
+                    <div>
+                        <h5>Alquileres Retrasados</h5>
+                        <h3>{{ $alquileresRetrasados }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Opciones de gestión --}}
+    <div class="row mt-5">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0 h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-people display-3 text-primary mb-3"></i>
+                    <h4>Gestión de Clientes</h4>
+                    <p class="text-muted">Ver y administrar los usuarios registrados como clientes.</p>
+                    <a href="{{ route('admin.clientes.index') }}" class="btn btn-primary">Ver Clientes</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0 h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-person-badge display-3 text-success mb-3"></i>
+                    <h4>Gestión de Disfraces</h4>
+                    <p class="text-muted">Añade, edita o elimina disfraces disponibles.</p>
+                    <a href="{{ route('admin.disfraces.index') }}" class="btn btn-success">Ver Disfraces</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
