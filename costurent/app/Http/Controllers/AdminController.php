@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use App\Models\Alquiler;
@@ -28,26 +29,27 @@ class AdminController extends Controller
             'nombre' => 'required|string|max:100',
             'apellido' => 'required|string|max:100',
             'correo' => 'required|email|unique:usuarios,correo',
-            'clave' => 'required|string|min:6',
             'telefono' => 'nullable|string|max:20',
         ]);
 
+        // Generar contraseña aleatoria
+        $claveTemporal = Str::random(10);
+
+        // Crear el usuario con contraseña encriptada
         Usuario::create([
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
             'correo' => $request->correo,
-            'clave' => bcrypt($request->clave),
+            'clave' => bcrypt($claveTemporal),
             'telefono' => $request->telefono,
             'rol' => 'cliente',
         ]);
 
-        return redirect()->route('admin.clientes.index')->with('success', 'Cliente creado exitosamente.');
-    }
-
-    public function listarClientes()
-    {
-        $clientes = Usuario::where('rol', 'cliente')->get();
-        return view('admin.clientes.index', compact('clientes'));
+        // Guardar clave temporal en sesión para mostrar después
+        return redirect()
+            ->route('admin.clientes.index')
+            ->with('success', 'Cliente creado exitosamente.')
+            ->with('claveTemporal', $claveTemporal);
     }
 
     public function index(Request $request)
@@ -58,8 +60,8 @@ class AdminController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('id', $search)
-                    ->orWhere('nombre', 'like', "%{$search}%")
-                    ->orWhere('apellido', 'like', "%{$search}%");
+                        ->orWhere('nombre', 'like', "%{$search}%")
+                        ->orWhere('apellido', 'like', "%{$search}%");
                 });
             })
             ->orderBy('created_at', 'desc')
@@ -68,23 +70,42 @@ class AdminController extends Controller
         return view('admin.clientes.index', compact('clientes', 'search'));
     }
 
-
-
-    public function cambiarEstadoAlquiler($id)
+    // Mostrar formulario para editar cliente - LINEA
+    public function edit($id)
     {
-        $alquiler = Alquiler::findOrFail($id);
-        $alquiler->estado = $alquiler->estado === 'pendiente' ? 'devuelto' : 'pendiente';
-        $alquiler->save();
-
-        return redirect()->back()->with('success', 'Estado del alquiler actualizado.');
+        $cliente = Usuario::where('rol', 'cliente')->findOrFail($id);
+        return view('admin.clientes.edit', compact('cliente'));
     }
 
-    public function aplicarSancion($id)
+    // Actualizar cliente
+    public function update(Request $request, $id)
     {
-        $alquiler = Alquiler::findOrFail($id);
-        $alquiler->sancionado = true;
-        $alquiler->save();
+        $cliente = Usuario::where('rol', 'cliente')->findOrFail($id);
 
-        return redirect()->back()->with('success', 'Sanción aplicada correctamente.');
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'apellido' => 'required|string|max:100',
+            'correo' => 'required|email|unique:usuarios,correo,' . $cliente->id,
+            'telefono' => 'nullable|string|max:20',
+        ]);
+
+        $cliente->nombre = $request->nombre;
+        $cliente->apellido = $request->apellido;
+        $cliente->correo = $request->correo;
+        $cliente->telefono = $request->telefono;
+        $cliente->save();
+
+        return redirect()->route('admin.clientes.index')
+                         ->with('success', 'Cliente actualizado correctamente.');
+    }
+
+    // Eliminar cliente
+    public function destroy($id)
+    {
+        $cliente = Usuario::where('rol', 'cliente')->findOrFail($id);
+        $cliente->delete();
+
+        return redirect()->route('admin.clientes.index')
+                         ->with('success', 'Cliente eliminado correctamente.');
     }
 }

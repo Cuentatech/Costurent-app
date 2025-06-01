@@ -8,10 +8,17 @@
 <div class="container mt-5">
     <h1 class="mb-4">Gestión de Clientes</h1>
 
-    {{-- Alertas --}}
+    {{-- Alertas --}}  
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+            @if(session('claveTemporal'))
+                <br>
+                <strong>Clave temporal:</strong> {{ session('claveTemporal') }}
+            @endif
+        </div>
     @endif
+
 
     {{-- Formulario de búsqueda --}}
     <form method="GET" action="{{ route('admin.clientes.index') }}" class="mb-3">
@@ -37,7 +44,7 @@
     {{-- Formulario de registro (oculto por defecto) --}}
     <div class="collapse mb-4" id="formularioRegistro">
         <div class="card card-body shadow">
-            <form action="{{ route('admin.clientes.store') }}" method="POST" novalidate>
+            <form action="{{ route('admin.clientes.guardarCliente') }}" method="POST" novalidate>
                 @csrf
 
                 <div class="row">
@@ -93,18 +100,61 @@
                         <th>Correo</th>
                         <th>Teléfono</th>
                         <th>Fecha de Registro</th>
+                        <th>Acciones</th> {{-- Nueva columna para acciones --}}
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $editarId = request()->query('editar');
+                    @endphp
+
                     @foreach ($clientes as $cliente)
-                        <tr>
-                            <td>{{ $cliente->id }}</td>
-                            <td>{{ $cliente->nombre }}</td>
-                            <td>{{ $cliente->apellido }}</td>
-                            <td>{{ $cliente->correo }}</td>
-                            <td>{{ $cliente->telefono ?? 'No registrado' }}</td>
-                            <td>{{ $cliente->created_at->format('d/m/Y') }}</td>
-                        </tr>
+                        @if($editarId == $cliente->id)
+                            {{-- Fila editable --}}
+                            <form action="{{ route('admin.clientes.update', $cliente->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <tr>
+                                    <td>{{ $cliente->id }}</td>
+                                    <td>
+                                        <input type="text" name="nombre" value="{{ old('nombre', $cliente->nombre) }}" class="form-control" required>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="apellido" value="{{ old('apellido', $cliente->apellido) }}" class="form-control" required>
+                                    </td>
+                                    <td>
+                                        <input type="email" name="correo" value="{{ old('correo', $cliente->correo) }}" class="form-control" required>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="telefono" value="{{ old('telefono', $cliente->telefono) }}" class="form-control">
+                                    </td>
+                                    <td>{{ $cliente->created_at->format('d/m/Y') }}</td>
+                                    <td>
+                                        <button type="submit" class="btn btn-sm btn-success">Guardar</button>
+                                        <a href="{{ route('admin.clientes.index') }}" class="btn btn-sm btn-secondary">Cancelar</a>
+                                    </td>
+                                </tr>
+                            </form>
+                        @else
+                            {{-- Fila normal --}}
+                            <tr>
+                                <td>{{ $cliente->id }}</td>
+                                <td>{{ $cliente->nombre }}</td>
+                                <td>{{ $cliente->apellido }}</td>
+                                <td>{{ $cliente->correo }}</td>
+                                <td>{{ $cliente->telefono ?? 'No registrado' }}</td>
+                                <td>{{ $cliente->created_at->format('d/m/Y') }}</td>
+                                <td>
+                                    <a href="{{ route('admin.clientes.index', ['editar' => $cliente->id]) }}" class="btn btn-sm btn-warning">Editar</a>
+
+                                    <form action="{{ route('admin.clientes.destroy', $cliente->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar este cliente?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>

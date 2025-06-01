@@ -21,9 +21,12 @@ Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
     // Clientes
-    Route::get('/clientes', [AdminController::class, 'index'])->name('clientes.index');       // Listar + búsqueda
-    Route::post('/clientes', [AdminController::class, 'guardarCliente'])->name('clientes.store'); // Guardar nuevo cliente
-
+    Route::get('clientes', [AdminController::class, 'index'])->name('clientes.index');
+    Route::get('clientes/crear', [AdminController::class, 'createCliente'])->name('clientes.create');
+    Route::post('clientes', [AdminController::class, 'guardarCliente'])->name('clientes.guardarCliente');
+    Route::get('clientes/{id}/editar', [AdminController::class, 'edit'])->name('clientes.edit');
+    Route::put('clientes/{id}', [AdminController::class, 'update'])->name('clientes.update');
+    Route::delete('clientes/{id}', [AdminController::class, 'destroy'])->name('clientes.destroy');
     // Disfraces
     Route::get('/disfraces', [AdminController::class, 'listarDisfraces'])->name('disfraces.index');
     Route::get('/disfraces/crear', [AdminController::class, 'crearDisfraz'])->name('disfraces.crear');
