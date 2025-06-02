@@ -10,8 +10,13 @@ class Disfraz extends Model
     protected $table = 'disfraces';
 
     protected $fillable = [
-        'nombre', 'descripcion', 'categoria_id', 
-        'cantidad_total', 'cantidad_disponible', 'precio'
+        'nombre',
+        'descripcion',
+        'categoria_id',
+        'cantidad_total',
+        'cantidad_disponible',
+        'precio',
+        'imagen'
     ];
 
     public function categoria()
@@ -24,5 +29,3 @@ class Disfraz extends Model
         return $this->hasMany(Alquiler::class, 'disfraz_id');
     }
 }
-
-

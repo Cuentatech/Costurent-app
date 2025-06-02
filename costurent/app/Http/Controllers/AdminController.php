@@ -68,6 +68,9 @@ class AdminController extends Controller
             ->paginate(10);
 
         return view('admin.clientes.index', compact('clientes', 'search'));
+
+
+        
     }
 
     // Mostrar formulario para editar cliente - LINEA
@@ -107,5 +110,69 @@ class AdminController extends Controller
 
         return redirect()->route('admin.clientes.index')
                          ->with('success', 'Cliente eliminado correctamente.');
+    }
+    public function listarAlquileres(Request $request)
+    {
+        $search = $request->input('search');
+
+        $query = Alquiler::with(['usuario', 'disfraz']);
+
+        if ($search) {
+            $query->whereHas('usuario', function ($q) use ($search) {
+                $q->where('nombre', 'like', '%' . $search . '%');
+            });
+        }
+
+        $alquileres = $query->orderBy('id', 'desc')->paginate(10);
+
+        return view('admin.alquileres.index', compact('alquileres', 'search'));
+    }
+    
+    public function eliminarAlquiler($id)
+    {
+        $alquiler = Alquiler::findOrFail($id);
+        $alquiler->delete();
+
+        return redirect()->route('admin.alquileres.index')->with('success', 'Alquiler eliminado correctamente.');
+    }
+    public function updatealquiler(Request $request, $id)
+    {
+        $alquiler = Alquiler::findOrFail($id);
+
+        $request->validate([
+            'estado' => 'required|in:reservada,activa,retrasada,finalizada,cancelada',
+            'monto_sancion' => 'nullable|numeric|min:0',
+        ]);
+
+        $alquiler->estado = $request->estado;
+        $alquiler->monto_sancion = $request->monto_sancion;
+        $alquiler->save();
+
+        return redirect()->route('admin.alquileres.index')->with('success', 'Alquiler actualizado correctamente.');
+    }
+    public function cambiarEstadoAlquiler(Request $request, $id)
+    {
+        $request->validate([
+            'estado' => 'required|in:reservada,activa,retrasada,finalizada,cancelada',
+        ]);
+
+        $alquiler = Alquiler::findOrFail($id);
+        $alquiler->estado = $request->estado;
+        $alquiler->save();
+
+        return redirect()->route('admin.alquileres.index')->with('success', 'Estado actualizado.');
+    }
+
+    public function aplicarSancion(Request $request, $id)
+    {
+        $request->validate([
+            'sancion' => 'nullable|string|max:255',
+        ]);
+
+        $alquiler = Alquiler::findOrFail($id);
+        $alquiler->sancion = $request->sancion;
+        $alquiler->save();
+
+        return redirect()->route('admin.alquileres.index')->with('success', 'Sanción aplicada.');
     }
 }

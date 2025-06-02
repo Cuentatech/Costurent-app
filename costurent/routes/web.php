@@ -2,6 +2,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DisfrazController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 
 // LOGIN
@@ -28,30 +30,22 @@ Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function 
     Route::put('clientes/{id}', [AdminController::class, 'update'])->name('clientes.update');
     Route::delete('clientes/{id}', [AdminController::class, 'destroy'])->name('clientes.destroy');
     // Disfraces
-    Route::get('/disfraces', [AdminController::class, 'listarDisfraces'])->name('disfraces.index');
-    Route::get('/disfraces/crear', [AdminController::class, 'crearDisfraz'])->name('disfraces.crear');
-    Route::post('/disfraces', [AdminController::class, 'guardarDisfraz'])->name('disfraces.guardar');
-    Route::get('/disfraces/{id}/editar', [AdminController::class, 'editarDisfraz'])->name('disfraces.editar');
-    Route::put('/disfraces/{id}', [AdminController::class, 'actualizarDisfraz'])->name('disfraces.actualizar');
-    Route::delete('/disfraces/{id}', [AdminController::class, 'eliminarDisfraz'])->name('disfraces.eliminar');
+    Route::resource('disfraces', DisfrazController::class)->except(['show']);
+    Route::post('/categorias', [CategoriaController::class, 'store'])->name('categorias.store');
 
     // Alquileres
     Route::get('/alquileres', [AdminController::class, 'listarAlquileres'])->name('alquileres.index');
     Route::post('/alquileres/{id}/cambiar-estado', [AdminController::class, 'cambiarEstadoAlquiler'])->name('alquileres.cambiarEstado');
-    Route::post('/alquileres/{id}/sancionar', [AdminController::class, 'aplicarSancion'])->name('alquileres.sancionar');
+    Route::delete('/alquileres/{id}', [AdminController::class, 'eliminarAlquiler'])->name('alquileres.destroy');
+    Route::put('/admin/alquileres/{id}', [AdminController::class, 'updatealquiler'])->name('alquileres.update');
 });
 
 // RUTAS PARA CLIENTE
     Route::middleware('can:cliente')->prefix('cliente')->name('cliente.')->group(function () {
-    Route::get('/dashboard', [ClienteController::class, 'dashboard'])->name('dashboard');
-    Route::get('/disfraces', [ClienteController::class, 'listarDisfraces'])->name('disfraces');
-    Route::get('/disfraces/{id}', [ClienteController::class, 'mostrarDisfraz'])->name('disfraces.mostrar');
-    Route::post('/disfraces/{id}/reservar', [ClienteController::class, 'reservar'])->name('disfraces.reservar');
-    Route::get('/alquileres/historial', [ClienteController::class, 'historialAlquileres'])->name('alquileres.historial');
-    Route::post('/alquileres/{id}/cancelar', [ClienteController::class, 'cancelarReserva'])->name('alquileres.cancelar');
     });
 
-    // Ruta de logout si la tienes en AuthController
+
+    //LOGOUT
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 });

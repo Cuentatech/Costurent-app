@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Alquiler extends Model
 {
@@ -23,4 +24,14 @@ class Alquiler extends Model
     {
         return $this->belongsTo(Disfraz::class, 'disfraz_id');
     }
+    public function getDiasRetrasoAttribute()
+    {
+        if ($this->estado !== 'retrasada' || !$this->fecha_fin) {
+            return 0;
+        }
+
+        $dias = Carbon::parse($this->fecha_fin)->diffInDays(now(), false);
+        return $dias > 0 ? $dias : 0;
+    }
+    
 }
