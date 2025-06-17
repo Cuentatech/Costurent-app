@@ -66,19 +66,13 @@ class AuthController extends Controller
             'correo' => $request->correo,
             'clave' => Hash::make($request->clave),
             'telefono' => $request->telefono,
-            'rol' => 'cliente',
+            'rol' => 'cliente',  // registro solo para clientes
         ]);
 
         return redirect()->route('login')->with('success', 'Cuenta creada con éxito, ya puedes iniciar sesión.');
     }
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    // Logout
 
-        return redirect('/login');
-    }
 
 }

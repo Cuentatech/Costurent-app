@@ -72,6 +72,7 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Cuenta creada con éxito, ya puedes iniciar sesión.');
     }
 
+    // Logout
     public function logout(Request $request)
     {
         Auth::logout();

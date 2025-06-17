@@ -13,6 +13,7 @@
         body {
             overflow-x: hidden;
         }
+        /* Sidebar */
         #sidebar {
             min-width: 250px;
             max-width: 250px;
@@ -35,12 +36,14 @@
             background: #0d6efd;
             color: #fff;
         }
+        /* Content */
         #content {
             margin-left: 250px;
             padding: 2rem;
             min-height: 100vh;
             background: #f8f9fa;
         }
+        /* Top navbar */
         .topbar {
             height: 56px;
             background: #fff;
@@ -59,6 +62,8 @@
             font-weight: 500;
             color: #333;
         }
+
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             #sidebar {
                 left: -250px;
@@ -114,29 +119,15 @@
                 </li>
             </ul>
         </div>
-
-        <!-- Botón de Cerrar Sesión al final del sidebar -->
-        <div class="mt-auto px-3 pb-4">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="btn btn-danger w-100">
-                    <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
-                </button>
-            </form>
-        </div>
     </nav>
+
 
     <div id="content">
         <div class="topbar">
             <span id="sidebarToggle" class="d-md-none"><i class="bi bi-list"></i></span>
-            <div class="user-info d-flex align-items-center gap-3 ms-auto">
-                <span>Bienvenido, {{ auth()->user()->nombre ?? 'Admin' }}</span>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Cerrar sesión">
-                        <i class="bi bi-box-arrow-right"></i>
-                    </button>
-                </form>
+            <div class="user-info ms-auto">
+                {{-- Aquí puedes mostrar el usuario logueado --}}
+                Bienvenido, {{ auth()->user()->nombre ?? 'Admin' }}
             </div>
         </div>
 
@@ -148,6 +139,7 @@
     <!-- Bootstrap JS + Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Toggle sidebar on mobile
         document.getElementById('sidebarToggle')?.addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('active');
         });

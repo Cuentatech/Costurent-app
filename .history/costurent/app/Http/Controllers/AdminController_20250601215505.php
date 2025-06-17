@@ -6,8 +6,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use App\Models\Alquiler;
-use Illuminate\Support\Facades\Auth;
-
 
 class AdminController extends Controller
 {
@@ -176,6 +174,5 @@ class AdminController extends Controller
         $alquiler->save();
 
         return redirect()->route('admin.alquileres.index')->with('success', 'Sanción aplicada.');
-        }
-        
+    }
 }

@@ -6,8 +6,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use App\Models\Alquiler;
-use Illuminate\Support\Facades\Auth;
-
 
 class AdminController extends Controller
 {
@@ -178,4 +176,12 @@ class AdminController extends Controller
         return redirect()->route('admin.alquileres.index')->with('success', 'Sanción aplicada.');
         }
         
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login'); // o la ruta de inicio de sesión que tengas
+    }
 }
