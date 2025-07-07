@@ -63,6 +63,20 @@ class DisfrazController extends Controller
         return redirect()->route('admin.disfraces.index')->with('success', 'Disfraz creado con imagen correctamente.');
     }
 
+        public function destroy($id)
+    {
+        $disfraz = Disfraz::findOrFail($id);
+
+        // Elimina imagen si existe
+        if ($disfraz->imagen) {
+            Storage::disk('public')->delete($disfraz->imagen);
+        }
+
+        $disfraz->delete();
+
+        return redirect()->route('admin.disfraces.index')->with('success', 'Disfraz eliminado correctamente.');
+    }
+
     // Mostrar formulario de edición
     public function edit($id)
     {
@@ -116,5 +130,42 @@ class DisfrazController extends Controller
 
         return redirect()->route('admin.perfil')->with('success', 'Perfil actualizado correctamente.');
     }
+    public function update(Request $request, $id)
+{
+    $disfraz = Disfraz::findOrFail($id);
+
+    $request->validate([
+        'nombre' => 'required',
+        'descripcion' => 'nullable',
+        'categoria_id' => 'required|exists:categorias,id',
+        'cantidad_total' => 'required|integer',
+        'cantidad_disponible' => 'required|integer',
+        'precio' => 'required|numeric',
+        'imagen' => 'nullable|image|max:2048',
+    ]);
+
+    $datos = $request->only([
+        'nombre',
+        'descripcion',
+        'categoria_id',
+        'cantidad_total',
+        'cantidad_disponible',
+        'precio'
+    ]);
+
+    if ($request->hasFile('imagen')) {
+        // Borra la imagen anterior si existe
+        if ($disfraz->imagen) {
+            Storage::disk('public')->delete($disfraz->imagen);
+        }
+
+        $datos['imagen'] = $request->file('imagen')->store('disfraces', 'public');
+    }
+
+    $disfraz->update($datos);
+
+    return redirect()->route('admin.disfraces.index')->with('success', 'Disfraz actualizado correctamente.');
+}
+
 
 }

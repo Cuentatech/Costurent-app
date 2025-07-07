@@ -39,7 +39,7 @@
             z-index: 2;
             max-width: 800px;
             padding: 2rem;
-            background: rgba(162, 193, 244, 0.4);
+            background: rgba(50, 22, 141, 0.33);
             border-radius: 20px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
@@ -292,28 +292,29 @@
     </section>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const fondos = [
-                "{{ asset('img/fondo1.jpg') }}",
-                "{{ asset('img/fondo2.jpg') }}",
-                "{{ asset('img/fondo3.jpg') }}",
-                "{{ asset('img/fondo4.jpg') }}",
-                "{{ asset('img/fondo5.jpg') }}",
-                "{{ asset('img/fondo6.jpg') }}"
-            ];
+    document.addEventListener("DOMContentLoaded", () => {
+        const fondos = [
+            "{{ asset('img/fondo1.jpg') }}",
+            "{{ asset('img/fondo2.jpg') }}",
+            "{{ asset('img/fondo3.jpg') }}",
+            "{{ asset('img/fondo4.jpg') }}",
+            "{{ asset('img/fondo5.jpg') }}",
+            "{{ asset('img/fondo6.jpg') }}"
+        ];
 
-            let index = 0;
-            const body = document.body;
+        let index = 0;
+        const body = document.body;
 
-            function cambiarFondo() {
-                body.style.backgroundImage = url('${fondos[index]}');
-                index = (index + 1) % fondos.length;
-            }
+        function cambiarFondo() {
+            body.style.backgroundImage = `url('${fondos[index]}')`;
+            index = (index + 1) % fondos.length;
+        }
 
-            cambiarFondo();
-            setInterval(cambiarFondo, 1500);
-        });
-    </script>
+        cambiarFondo(); // primer fondo
+        setInterval(cambiarFondo, 1500); // cambia cada 3 segundos
+    });
+</script>
+
 </body>
 
 </html>

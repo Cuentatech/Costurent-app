@@ -148,41 +148,30 @@
       <a href="{{ route('register') }}" class="text-white text-decoration-underline">¿No tienes cuenta? Regístrate</a>
     </div>
   </div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const fondos = [
+            "{{ asset('img/fondo1.jpg') }}",
+            "{{ asset('img/fondo2.jpg') }}",
+            "{{ asset('img/fondo3.jpg') }}",
+            "{{ asset('img/fondo4.jpg') }}",
+            "{{ asset('img/fondo5.jpg') }}",
+            "{{ asset('img/fondo6.jpg') }}"
+        ];
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const adminRadio = document.getElementById('rol_admin');
-      const clienteRadio = document.getElementById('rol_cliente');
-      const registroLink = document.getElementById('registro-link');
+        let index = 0;
+        const body = document.body;
 
-      function toggleRegistroLink() {
-        registroLink.style.display = clienteRadio.checked ? 'block' : 'none';
-      }
+        function cambiarFondo() {
+            body.style.backgroundImage = `url('${fondos[index]}')`;
+            index = (index + 1) % fondos.length;
+        }
 
-      adminRadio.addEventListener('change', toggleRegistroLink);
-      clienteRadio.addEventListener('change', toggleRegistroLink);
+        cambiarFondo(); // primer fondo
+        setInterval(cambiarFondo, 1500); // cambia cada 3 segundos
     });
+</script>
 
-    // Fondo dinámico como en el inicio
-    const fondos = [
-      "{{ asset('img/fondo1.jpg') }}",
-      "{{ asset('img/fondo2.jpg') }}",
-      "{{ asset('img/fondo3.jpg') }}",
-      "{{ asset('img/fondo4.jpg') }}",
-      "{{ asset('img/fondo5.jpg') }}"
-    ];
-
-    let index = 0;
-    const body = document.body;
-
-    function cambiarFondo() {
-      body.style.backgroundImage = url('${fondos[index]}');
-      index = (index + 1) % fondos.length;
-    }
-
-    cambiarFondo();
-    setInterval(cambiarFondo, 1500);
-  </script>
 </body>
 
 </html>

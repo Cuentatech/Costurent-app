@@ -153,29 +153,30 @@
     </div>
   </div>
 
-  <script>
+<script>
     document.addEventListener("DOMContentLoaded", () => {
-      const fondos = [
-        "{{ asset('img/fondo1.jpg') }}",
-        "{{ asset('img/fondo2.jpg') }}",
-        "{{ asset('img/fondo3.jpg') }}",
-        "{{ asset('img/fondo4.jpg') }}",
-        "{{ asset('img/fondo5.jpg') }}",
-        "{{ asset('img/fondo6.jpg') }}"
-      ];
+        const fondos = [
+            "{{ asset('img/fondo1.jpg') }}",
+            "{{ asset('img/fondo2.jpg') }}",
+            "{{ asset('img/fondo3.jpg') }}",
+            "{{ asset('img/fondo4.jpg') }}",
+            "{{ asset('img/fondo5.jpg') }}",
+            "{{ asset('img/fondo6.jpg') }}"
+        ];
 
-      let index = 0;
-      const body = document.body;
+        let index = 0;
+        const body = document.body;
 
-      function cambiarFondo() {
-        body.style.backgroundImage = url('${fondos[index]}');
-        index = (index + 1) % fondos.length;
-      }
+        function cambiarFondo() {
+            body.style.backgroundImage = `url('${fondos[index]}')`;
+            index = (index + 1) % fondos.length;
+        }
 
-      cambiarFondo();
-      setInterval(cambiarFondo, 1500);
+        cambiarFondo(); // primer fondo
+        setInterval(cambiarFondo, 1500); // cambia cada 3 segundos
     });
-  </script>
+</script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

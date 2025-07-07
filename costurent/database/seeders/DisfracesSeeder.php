@@ -16,6 +16,7 @@ class DisfracesSeeder extends Seeder
             'cantidad_total' => 10,
             'cantidad_disponible' => 10,
             'precio' => 150.00,
+            'imagen' => 'disfraces/vampiro_clasico.jpg',
         ]);
 
         Disfraz::create([
@@ -25,6 +26,7 @@ class DisfracesSeeder extends Seeder
             'cantidad_total' => 8,
             'cantidad_disponible' => 8,
             'precio' => 120.00,
+            'imagen'
         ]);
     }
 }

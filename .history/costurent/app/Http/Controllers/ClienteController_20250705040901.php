@@ -1,1 +1,0 @@
-c:\Users\HP\AppData\Local\Temp\Rar$DRa7344.34519.rartemp\COSTURENT ACTUALIZADO\costurent\app\Http\Controllers\ClienteController.php
