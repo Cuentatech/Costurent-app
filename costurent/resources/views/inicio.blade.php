@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
-    .btn-account {
+        .btn-account {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: white;
@@ -29,6 +29,7 @@
     transform: scale(1.05);
     color: white;
   }
+    
     * {
       margin: 0;
       padding: 0;
@@ -785,7 +786,7 @@
       }
 
       cambiarFondo();
-      setInterval(cambiarFondo, 2700);
+      setInterval(cambiarFondo, 3000);
     });
   </script>
 

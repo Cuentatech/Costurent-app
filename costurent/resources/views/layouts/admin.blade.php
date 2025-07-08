@@ -16,7 +16,6 @@
             --sidebar-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --sidebar-hover: rgba(255, 255, 255, 0.1);
             --sidebar-active: rgba(255, 255, 255, 0.2);
-            --content-bg: #f8fafc;
         }
 
 
@@ -290,6 +289,30 @@
             document.getElementById('sidebar').classList.toggle('active');
         });
     </script>
+      <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const fondos = [
+        "{{ asset('img/fondo1.jpg') }}",
+        "{{ asset('img/fondo2.jpg') }}",
+        "{{ asset('img/fondo3.jpg') }}",
+        "{{ asset('img/fondo4.jpg') }}",
+        "{{ asset('img/fondo5.jpg') }}",
+        "{{ asset('img/fondo6.jpg') }}",
+        "{{ asset('img/fondo7.jpg') }}"
+      ];
+
+      let index = 0;
+      const body = document.body;
+
+      function cambiarFondo() {
+        body.style.backgroundImage = `url('${fondos[index]}')`;
+        index = (index + 1) % fondos.length;
+      }
+
+      cambiarFondo();
+      setInterval(cambiarFondo, 3000);
+    });
+  </script>
     @stack('scripts')
 </body>
 </html>

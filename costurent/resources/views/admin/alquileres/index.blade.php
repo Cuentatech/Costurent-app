@@ -1,3 +1,6 @@
+admin alquileres index.blade.php
+
+
 @extends('layouts.admin')
 
 @section('title', 'Gestión de Alquileres')
@@ -92,11 +95,33 @@
                 <tbody>
                     @foreach($alquileres as $a)
                         @php
-                            $hoy = \Carbon\Carbon::now()->startOfDay();
-                            $fin = \Carbon\Carbon::parse($a->fecha_fin)->addDay()->startOfDay();
-                            $diasRetraso = $hoy->gt($fin) && $a->estado !== 'finalizada' ? $fin->diffInDays($hoy) : 0;
-                            $sancion = $diasRetraso * 10;
-                            $montoFinal = ($a->precio * $a->cantidad) + $sancion;
+
+                            $precio = $a->precio;
+                            $cantidad = $a->cantidad;
+                            $fechaInicio = \Carbon\Carbon::parse($a->fecha_inicio);
+                            $fechaFin = \Carbon\Carbon::parse($a->fecha_fin);
+                            $dias = $fechaInicio->diffInDays($fechaFin) + 1;
+                            $monto_base = $precio * $cantidad * $dias;
+
+                            if ($a->estado === 'cancelada') {
+                                $diasRetraso = 0;
+                                $sancion = 0;
+                                $montoFinal = 0;
+                            } elseif ($a->estado === 'retrasada') {
+                                $hoy = \Carbon\Carbon::now()->startOfDay();
+                                $fechaLimite = $fechaFin->copy()->addDay();
+                                $diasRetraso = $hoy->greaterThan($fechaLimite) ? max(1, $fechaLimite->diffInDays($hoy)) : 0;
+                                $sancion = $diasRetraso * 10;
+                                $montoFinal = $monto_base + $sancion;
+                            } elseif ($a->estado === 'finalizada') {
+                                $diasRetraso = 0;
+                                $sancion = 0;
+                                $montoFinal = 0;
+                            } else {
+                                $diasRetraso = 0;
+                                $sancion = 0;
+                                $montoFinal = $monto_base;
+                            }
                         @endphp
 
                         @if(request('edit') == $a->id)
@@ -120,8 +145,8 @@
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td>{{ $diasRetraso ? $diasRetraso . ' día(s)' : '-' }}</td>
-                                    <td>{{ $sancion ? 'S/. ' . number_format($sancion, 2) : '-' }}</td>
+                                    <td>{{ isset($diasRetraso) ? $diasRetraso . ' día(s)' : '-' }}</td>
+                                    <td>{{ isset($sancion) ? 'S/. ' . number_format($sancion, 2) : '-' }}</td>
                                     <td><strong>S/. {{ number_format($montoFinal, 2) }}</strong></td>
                                     <td>
                                         <button class="btn btn-success btn-sm">Guardar</button>
@@ -139,8 +164,8 @@
                                 <td>{{ \Carbon\Carbon::parse($a->fecha_fin)->format('d/m/Y') }}</td>
                                 <td>S/. {{ number_format($a->precio, 2) }}</td>
                                 <td>{{ ucfirst($a->estado) }}</td>
-                                <td>{{ $diasRetraso ? $diasRetraso . ' día(s)' : '-' }}</td>
-                                <td>{{ $sancion ? 'S/. ' . number_format($sancion, 2) : '-' }}</td>
+                                <td>{{ isset($diasRetraso) ? $diasRetraso . ' día(s)' : '-' }}</td>
+                                <td>{{ isset($sancion) ? 'S/. ' . number_format($sancion, 2) : '-' }}</td>
                                 <td><strong>S/. {{ number_format($montoFinal, 2) }}</strong></td>
                                 <td>
                                     <a href="{{ route('admin.alquileres.index', ['edit' => $a->id]) }}" class="btn btn-warning btn-sm">Editar</a>

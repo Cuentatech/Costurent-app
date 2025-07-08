@@ -1,3 +1,7 @@
+cliente alquileres index.blade.php
+
+
+
 @extends('layouts.cliente')
 
 @section('title', 'Mis Alquileres')
@@ -30,9 +34,9 @@
                 <tbody>
                     @foreach($alquileres as $alquiler)
                         @php
-                            $montoBase = $alquiler->total;
-                            $sancion = $alquiler->monto_sancion ?? 0;
-                            $montoFinal = $montoBase + $sancion;
+                            $montoBase = $alquiler->monto_base;
+                            $sancion = $alquiler->monto_sancion;
+                            $montoFinal = $alquiler->monto_total;
                             $fechaInicio = \Carbon\Carbon::parse($alquiler->fecha_inicio)->format('d/m/Y');
                             $fechaFin = \Carbon\Carbon::parse($alquiler->fecha_fin)->format('d/m/Y');
                         @endphp
@@ -52,9 +56,15 @@
                                 </span>
                             </td>
                             <td class="text-end">
-                                <div>S/ {{ number_format($montoBase, 2) }}</div>
-                                @if($alquiler->estado === 'retrasada' && $sancion > 0)
-                                    <small class="text-danger">+ Sanción: S/ {{ number_format($sancion, 2) }}</small><br>
+                                @if($alquiler->estado === 'cancelada')
+                                    <span class="text-danger">Cancelado - sin costo</span>
+                                @elseif($alquiler->estado === 'finalizada')
+                                    <span class="text-danger">Completa</span> 
+                                @else
+                                    <div>S/ {{ number_format($montoBase, 2) }}</div>
+                                    @if($alquiler->estado === 'retrasada' && $sancion > 0)
+                                        <small class="text-danger">+ Sanción: S/ {{ number_format($sancion, 2) }}</small><br>
+                                    @endif
                                     <strong class="text-primary">Total: S/ {{ number_format($montoFinal, 2) }}</strong>
                                 @endif
                             </td>

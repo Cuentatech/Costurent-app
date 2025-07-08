@@ -19,7 +19,7 @@ class Alquiler extends Model
         'estado',
         'dias_retraso',
         'monto_sancion',
-        'monto_total' // ✅ monto_total calculado y guardado
+        'total' // ✅ monto_total calculado y guardado
     ];
 
     public function usuario()
@@ -51,4 +51,16 @@ class Alquiler extends Model
     {
         return $this->dias_retraso * 10;
     }
+    public function getMontoBaseAttribute()
+    {
+        $dias = Carbon::parse($this->fecha_inicio)->diffInDays(Carbon::parse($this->fecha_fin)) + 1;
+        return $dias * $this->precio * $this->cantidad;
+    }
+
+    // 💰 Monto total incluyendo sanción
+    public function getMontoTotalAttribute()
+    {
+        return $this->monto_base + $this->monto_sancion;
+    }
+
 }

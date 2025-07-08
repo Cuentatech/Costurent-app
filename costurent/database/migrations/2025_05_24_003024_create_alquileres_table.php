@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
             $table->enum('estado', ['reservada', 'activa', 'retrasada', 'finalizada', 'cancelada'])->default('reservada');
-            $table->decimal('total', 10, 2);
+            $table->decimal('total', 8, 2)->nullable(); // o ->default(0.00)
             $table->integer('dias_retraso')->nullable();
             $table->decimal('monto_sancion', 10, 2)->nullable();
             $table->timestamps();

@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 
         // Perfil
         Route::get('/perfil', [AdminController::class, 'perfil'])->name('perfil');
-        Route::put('/perfil', [AdminController::class, 'actualizarPerfil'])->name('perfil.update');
+        Route::put('/perfil', action: [AdminController::class, 'actualizarPerfil'])->name('perfil.update');
 
         // Clientes
         Route::get('/clientes', [AdminClienteController::class, 'index'])->name('clientes.index');
@@ -56,14 +56,41 @@ Route::middleware('auth')->group(function () {
     });
 
     // RUTAS PARA CLIENTE
-    Route::middleware('can:cliente')->prefix('cliente')->name('cliente.')->group(function () {
+Route::middleware(['auth', 'can:cliente'])
+    ->prefix('cliente')
+    ->name('cliente.')
+    ->group(function () {
+
+        // Dashboard
         Route::get('/dashboard', [ClienteController::class, 'dashboard'])->name('dashboard');
+
+        // Catálogo
         Route::get('/catalogo', [ClienteController::class, 'catalogo'])->name('catalogo');
+
+        // Alquileres
         Route::get('alquiler/{disfraz}/crear', [ClienteController::class, 'formAlquiler'])->name('alquiler.form');
         Route::post('alquiler/guardar', [ClienteController::class, 'guardarAlquiler'])->name('alquiler.guardar');
         Route::get('/alquileres', [ClienteController::class, 'misAlquileres'])->name('alquileres.index');
+        
+
+        // Perfil
+        Route::get('/perfil', [ClienteController::class, 'perfil'])->name('perfil');
         Route::put('/perfil', [ClienteController::class, 'actualizarPerfil'])->name('perfil.update');
+
+        // Carrito
+        Route::get('/carrito', [ClienteController::class, 'verCarrito'])->name('carrito.ver');
+        Route::post('/carrito/agregar', [ClienteController::class, 'agregarAlCarrito'])->name('carrito.agregar');
+        Route::delete('/carrito/eliminar/{id}', [ClienteController::class, 'eliminarDelCarrito'])->name('carrito.eliminar');
+
+        // Checkout
+        Route::get('/checkout', [ClienteController::class, 'checkout'])->name('checkout');
+        Route::post('/checkout/procesar', [ClienteController::class, 'procesarCheckout'])->name('checkout.procesar');
+
+        // Pago
+        Route::get('/pago', [ClienteController::class, 'vistaPago'])->name('pago');
+        Route::post('/pago/procesar', [ClienteController::class, 'procesarPago'])->name('pago.procesar');
     });
+
 
     // Cerrar sesión
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

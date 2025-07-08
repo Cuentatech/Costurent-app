@@ -33,13 +33,13 @@ class AdminController extends Controller
                 ];
             });
 
-        $alquileresCompletados = Alquiler::with('disfraz', 'cliente')
+        $alquileresCompletados = Alquiler::with('disfraz', 'usuario')
             ->where('estado', 'completado')
             ->latest()
             ->take(5)
             ->get()
             ->map(function ($alquiler) {
-                $nombreCliente = optional($alquiler->cliente)->nombre ?? 'Cliente';
+                $nombreCliente = optional($alquiler->usuario)->nombre ?? 'Cliente';
                 $nombreDisfraz = optional($alquiler->disfraz)->nombre ?? 'Disfraz';
                 return [
                     'tipo'    => 'alquiler_completado',
@@ -50,7 +50,7 @@ class AdminController extends Controller
                 ];
             });
 
-        $alquileresRetrasos = Alquiler::with('disfraz', 'cliente')
+        $alquileresRetrasos = Alquiler::with('disfraz', 'usuario')
             ->where('estado', 'retrasada')
             ->latest()
             ->take(5)
@@ -87,7 +87,7 @@ class AdminController extends Controller
         $admin = Auth::user();
         return view('admin.perfil.show', compact('admin'));
     }
-    // 🛠️ Actualizar perfil
+    // 🛠 Actualizar perfil
 public function actualizarPerfil(Request $request)
 {
     $admin = Usuario::find(Auth::id());
@@ -132,8 +132,5 @@ public function actualizarPerfil(Request $request)
 
     return redirect()->route('admin.perfil')->with('success', 'Perfil actualizado correctamente.');
 }
-
- 
-
 
 }
