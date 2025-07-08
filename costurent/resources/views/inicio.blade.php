@@ -12,6 +12,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
+    .btn-account {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 0.6rem 0.8rem;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-account:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    color: white;
+  }
     * {
       margin: 0;
       padding: 0;
@@ -510,6 +527,9 @@
             <li class="nav-item">
               <a class="nav-link" href="#contacto">Contacto</a>
             </li>
+            <a href="{{ route('login') }}" class="btn btn-account ms-3 d-flex align-items-center justify-content-center" title="Mi cuenta">
+            <i class="fas fa-user-secret"></i>
+            </a>
           </ul>
         </div>
       </div>
@@ -527,7 +547,7 @@
           de disfraces de calidad para hacer realidad tus sueños y fantasías.
         </p>
         <div class="btn-group-hero">
-          <a href="#login" class="btn-hero btn-primary-hero">
+          <a href="login" class="btn-hero btn-primary-hero">
             <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
           </a>
           <a href="register" class="btn-hero btn-secondary-hero">
@@ -595,7 +615,7 @@
             <img src="{{ asset('img/disfraces/disfraz1.jpg') }}" alt="Mago Místico">
             <h5>Mago Místico</h5>
             <p>Un clásico hechicero con túnica y sombrero de estrellas.</p>
-            <a href="login" class="btn-obtener">
+            <a href="/login" class="btn-obtener">
               <i class="fas fa-shopping-cart"></i> Obtener
             </a>
           </div>
@@ -603,7 +623,7 @@
             <img src="{{ asset('img/disfraces/disfraz2.jpg') }}" alt="Fantasma Divertido">
             <h5>Fantasma Divertido</h5>
             <p>Para asustar y hacer reír al mismo tiempo.</p>
-            <a href="login" class="btn-obtener">
+            <a href="/login" class="btn-obtener">
               <i class="fas fa-shopping-cart"></i> Obtener
             </a>
           </div>
@@ -611,7 +631,7 @@
             <img src="{{ asset('img/disfraces/disfraz3.jpg') }}" alt="Princesa Real">
             <h5>Princesa Real</h5>
             <p>Con vestidos brillantes y detalles encantadores.</p>
-            <a href="login" class="btn-obtener">
+            <a href="/login" class="btn-obtener">
               <i class="fas fa-shopping-cart"></i> Obtener
             </a>
           </div>
@@ -619,7 +639,7 @@
             <img src="{{ asset('img/disfraces/disfraz4.jpg') }}" alt="Animalito Tierno">
             <h5>Animalito Tierno</h5>
             <p>Perfecto para los más pequeños de casa.</p>
-            <a href="login" class="btn-obtener">
+            <a href="/login" class="btn-obtener">
               <i class="fas fa-shopping-cart"></i> Obtener
             </a>
           </div>
@@ -627,7 +647,7 @@
             <img src="{{ asset('img/disfraces/disfraz5.jpg') }}" alt="Ninja Secreto">
             <h5>Ninja Secreto</h5>
             <p>Agilidad y misterio en un solo disfraz.</p>
-            <a href="login" class="btn-obtener">
+            <a href="/login" class="btn-obtener">
               <i class="fas fa-shopping-cart"></i> Obtener
             </a>
           </div>
@@ -635,7 +655,7 @@
             <img src="{{ asset('img/disfraces/disfraz6.jpg') }}" alt="Robot del Futuro">
             <h5>Robot del Futuro</h5>
             <p>Brilla con luces y sonidos increíbles.</p>
-            <a href="login" class="btn-obtener">
+            <a href="/login" class="btn-obtener">
               <i class="fas fa-shopping-cart"></i> Obtener
             </a>
           </div>
@@ -716,7 +736,7 @@
             width: 100%;
             background: linear-gradient(to top, rgba(147, 51, 234, 0.9), transparent);
             color: #fff;
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
           ">
             <h6 class="mb-0">¡Te esperamos!</h6>
@@ -765,7 +785,7 @@
       }
 
       cambiarFondo();
-      setInterval(cambiarFondo, 3000);
+      setInterval(cambiarFondo, 2700);
     });
   </script>
 
